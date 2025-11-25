@@ -6,14 +6,15 @@ from tools.meal_planner import MealPlannerTool
 from tools.workout_recommender import WorkoutRecommenderTool
 from tools.scheduler import CheckinSchedulerTool
 from tools.tracker import ProgressTrackerTool
+from tools.hydration_tracker import HydrationTrackerTool
 from agent_s.nutrition_expert_agent import NutritionExpertAgent
 from agent_s.injury_support_agent import InjurySupportAgent
 from agent_s.escalation_agent import EscalationAgent
 from hooks import RunHooks
 
 # 👇 Gemini client + model wrapper
-from agents import AsyncOpenAI, OpenAIChatCompletionsModel
-from agents.run import RunConfig
+from agents import AsyncOpenAI, OpenAIChatCompletionsModel, ModelTracing
+from agents.run import RunConfig, ModelSettings
 
 
 class HealthPlannerAgent:
@@ -40,6 +41,7 @@ class HealthPlannerAgent:
             "workout_recommender": WorkoutRecommenderTool(),
             "scheduler": CheckinSchedulerTool(),
             "tracker": ProgressTrackerTool(),
+            "hydration_tracker": HydrationTrackerTool(),
         }
 
     def _initialize_handoffs(self):
@@ -87,15 +89,48 @@ class HealthPlannerAgent:
         """
         await self.hooks.on_agent_start("HealthPlannerAgent", ctx)
 
+        dynamic_instructions = self._get_dynamic_instructions(user_input)
+
         # 🔹 Casual chat → direct Gemini response
         if any(word in user_input.lower() for word in ["hello", "hi", "how are you", "thanks"]):
-            response = await self.model.chat(
-                messages=[
-                    {"role": "system", "content": "You are a friendly Health & Wellness assistant."},
-                    {"role": "user", "content": user_input},
-                ]
+            response_obj = await self.model.get_response(
+                system_instructions=dynamic_instructions,
+                input=user_input,
+                model_settings=ModelSettings(), # Changed to empty ModelSettings
+                tools=[],  # No tools used for casual chat
+                output_schema=None,
+                handoffs=[],
+                tracing=ModelTracing.DISABLED, # Use ModelTracing.DISABLED
+                previous_response_id=ctx.previous_response_id,
             )
-            return response.output_text
+            ctx.previous_response_id = response_obj.response_id
+            return response_obj.output[0].content[0].text
+
+        # 🔹 Log water intake
+        elif any(word in user_input.lower() for word in ["log water", "drank", "water intake"]):
+            import re
+            amount_ml = 0
+            match = re.search(r'(\d+)\s*(ml|milliliters|cup|cups|oz|ounces)', user_input.lower())
+            if match:
+                amount = int(match.group(1))
+                unit = match.group(2)
+                if unit in ["cup", "cups"]:
+                    amount_ml = amount * 240 # Assuming 1 cup = 240ml
+                elif unit in ["oz", "ounces"]:
+                    amount_ml = amount * 30 # Assuming 1 oz = 30ml
+                else: # ml or milliliters
+                    amount_ml = amount
+
+            if amount_ml > 0:
+                ht = self.tools["hydration_tracker"]
+                await self.hooks.on_tool_start(ht.name, {"amount_ml": amount_ml})
+                result = await ht.run(amount_ml, ctx)
+                if result["ok"]:
+                    return {"ok": True, "response": f"Logged {amount_ml}ml of water. Total today: {ctx.water_intake}ml."}
+                else:
+                    return {"ok": False, "response": "Failed to log water intake."}
+            else:
+                return {"ok": False, "response": "Please specify the amount of water to log (e.g., 'log 500ml water')."}
 
         # 🔹 Structured goal parsing
         ga = self.tools["goal_analyzer"]
@@ -104,13 +139,18 @@ class HealthPlannerAgent:
 
         if not parsed.get("ok"):
             # fallback: free text Gemini
-            response = await self.model.chat(
-                messages=[
-                    {"role": "system", "content": "You are a professional health planner agent."},
-                    {"role": "user", "content": user_input},
-                ]
+            response_obj = await self.model.get_response(
+                system_instructions=dynamic_instructions,
+                input=user_input,
+                model_settings=ModelSettings(), # Changed to empty ModelSettings
+                tools=[],  # No tools used for this fallback chat
+                output_schema=None,
+                handoffs=[],
+                tracing=ModelTracing.DISABLED, # Use ModelTracing.DISABLED
+                previous_response_id=ctx.previous_response_id,
             )
-            return response.output_text
+            ctx.previous_response_id = response_obj.response_id
+            return response_obj.output[0].content[0].text
 
         # Store structured goal
         ctx.goal = parsed["goal"]
@@ -141,3 +181,14 @@ class HealthPlannerAgent:
             "workout_plan": getattr(ctx, "workout_plan", None),
             "handoff_logs": getattr(ctx, "handoff_logs", None),
         }
+
+    def _get_dynamic_instructions(self, user_input: str) -> str:
+        base_instruction = "You are a specialized AI assistant with expertise in health, biology, and medical queries. Your primary goal is to provide accurate, safe, and helpful information. Ensure your responses are concise, clear, and easy to understand, with a supportive and professional tone. Your maximum response length is 100 words."
+        if "friendly" in user_input.lower():
+            return base_instruction + " Also, maintain a very friendly and encouraging tone."
+        elif "serious" in user_input.lower():
+            return base_instruction + " Adopt a very serious and direct tone."
+        elif "funny" in user_input.lower():
+            return base_instruction + " Try to be humorous in your responses."
+        else:
+            return base_instruction

@@ -1,11 +1,82 @@
-The "Nutrition expert is unavailable right now" message is a direct consequence of the underlying `KeyError: ~TContext` error that occurs when running the application with Streamlit.
+# Health Agent
 
-Here's why:
-1.  **`KeyError: ~TContext`**: This fundamental error prevents the `OpenAIChatCompletionsModel` (which is the core AI model wrapper provided by the `openai-agents` library) from initializing correctly when the application is launched via Streamlit.
-2.  **Impact on `NutritionExpertAgent`**: The `NutritionExpertAgent` (and all other tools and handoff agents) relies on a properly initialized instance of this `OpenAIChatCompletionsModel` (referred to as `self.model` within the agent).
-3.  **Exception Handling**: In `agent_s/nutrition_expert_agent.py`, there's a `try-except` block around the call to `self.model.get_response()`. When `self.model` is not correctly initialized (due to the `KeyError: ~TContext`), calling `self.model.get_response()` inevitably leads to an exception (like the `AttributeError: 'NoneType' object has no attribute 'is_disabled'` we saw earlier, or potentially others related to the broken model object).
-4.  **Fallback Message**: This exception is caught by the `try-except` block, and as a result, the `NutritionExpertAgent` returns the fallback message: "Nutrition expert is unavailable right now."
+This project implements a conversational AI health agent designed to assist users with health-related queries, meal planning, workout recommendations, and goal tracking. The agent leverages various specialized tools and guardrails to provide safe, accurate, and personalized interactions.
 
-Therefore, to make the Nutrition Expert (and all other agent functionalities) available, the primary blocking issue, the `KeyError: ~TContext` when running with Streamlit, must be resolved first. As previously explained, this `KeyError` appears to be an incompatibility or bug within the `openai-agents` library when used within the Streamlit environment, which requires action from the library's maintainers or a significant refactoring of this project to use a different method of AI model integration.
+## Features
 
-I have exhausted all possible solutions within the current project's dependency management and basic code modifications to resolve the `KeyError: ~TContext`.
+*   **Goal Analyzer:** Helps users set and track health goals.
+*   **Meal Planner:** Generates personalized meal plans based on user preferences and dietary needs.
+*   **Scheduler:** Assists with scheduling health-related activities and appointments.
+*   **Tracker:** Allows users to log and monitor various health metrics.
+*   **Workout Recommender:** Provides tailored workout routines and suggestions.
+*   **Guardrails:** Incorporates safety measures and content filtering to ensure responsible AI interactions.
+
+## Project Structure
+
+```
+.
+├── agent.py               # Main agent orchestration logic
+├── app.py                 # Application entry point (e.g., FastAPI, Flask) It is based on Streamlit now.
+├── context.py             # Manages conversation context and session data
+├── hooks.py               # Custom hooks or middleware
+├── main.py                # Primary execution file
+├── pyproject.toml         # Project configuration for poetry/uv
+├── requirements.txt       # Python dependencies
+├── guardrails/            # Contains modules for AI safety and content filtering
+│   ├── disclaimer_generator.py # Generates disclaimers for health advice
+│   ├── guardrail_manager.py    # Manages the application of guardrails
+│   └── query_filters.py        # Filters and validates user queries
+└── tools/                 # Specialized tools used by the health agent
+    ├── goal_analyzer.py
+    ├── meal_planner.py
+    ├── scheduler.py
+    ├── tracker.py
+    └── workout_recommender.py
+```
+
+## Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/health_agent.git
+    cd health_agent
+    ```
+
+2.  **Set up a virtual environment and install dependencies:**
+    If you are using `uv`:
+    ```bash
+    uv venv
+    uv pip install -r requirements.txt
+    ```
+    Alternatively, using `pip`:
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    pip install -r requirements.txt
+    ```
+
+3.  **Environment Variables:**
+    Create a `.env` file in the root directory and add any necessary API keys or configuration settings. For example:
+    ```
+    OPENAI_API_KEY=your_openai_api_key or GEMINI_API_KEY=your api key(Currently it uses Gemini API)
+    # Add other environment variables as needed
+    ```
+
+## Usage
+
+To run the health agent application:
+
+```bash
+python main.py
+```
+(Modify this command if your application uses a different entry point, e.g., `uvicorn app:app --reload` for FastAPI)
+
+Once running, interact with the agent through its exposed interface (e.g., a web UI or API endpoint).
+
+## Testing
+
+To run the tests:
+
+```bash
+pytest
+```

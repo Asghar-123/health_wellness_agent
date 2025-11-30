@@ -1,0 +1,22 @@
+{
+    "name": "Guest",
+    "uid": "ff0f7d7e-637f-4692-9ba2-ee7e5c971641",
+    "goal": null,
+    "diet_preferences": null,
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "hello and assalam o alikum"
+        },
+        {
+            "role": "assistant",
+            "content": "Wa alaikum assalam! Hello to you too. How can I help you today?\n\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        }
+    ]
+}

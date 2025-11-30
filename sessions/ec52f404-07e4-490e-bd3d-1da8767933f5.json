@@ -1,0 +1,22 @@
+{
+    "name": "Guest",
+    "uid": "ec52f404-07e4-490e-bd3d-1da8767933f5",
+    "goal": null,
+    "diet_preferences": null,
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "provide me a meal plan"
+        },
+        {
+            "role": "assistant",
+            "content": "I am a specialized AI assistant for health and wellness. I cannot provide specific meal plans, but I can offer general healthy eating tips. Would you like assistance with that?\n\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        }
+    ]
+}

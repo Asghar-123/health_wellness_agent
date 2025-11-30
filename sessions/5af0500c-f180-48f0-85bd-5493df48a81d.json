@@ -1,0 +1,30 @@
+{
+    "name": "Guest",
+    "uid": "5af0500c-f180-48f0-85bd-5493df48a81d",
+    "goal": null,
+    "diet_preferences": null,
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "give me a meal plan"
+        },
+        {
+            "role": "assistant",
+            "content": "Okay, I can help you with that. To provide you with an appropriate meal plan, I need a little more information. Please tell me about:\n\n*   **Your goals:** Are you trying to lose weight, gain muscle, eat healthier, or manage a specific health condition?\n*   **Your dietary preferences/restrictions:** Are you vegetarian, vegan, gluten-free, or do you have any allergies or intolerances?\n*   **Your typical daily schedule:** This will help me suggest meal times that fit your lifestyle.\n*   **Your activity level:** How active are you on a daily basis?\n\nOnce I have this information, I can create a sample meal plan for you.\n\n***\n\n**Disclaimer:** *This information is intended for general knowledge and informational purposes only, and does not constitute medical advice. It is essential to consult with a qualified healthcare professional or registered dietitian for any health concerns or before making any dietary changes.*\n\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        },
+        {
+            "role": "user",
+            "content": "my goal is to eat healthier and I like only meat which is halal"
+        },
+        {
+            "role": "assistant",
+            "content": "Okay, thank you for letting me know your goal is to eat healthier and that you prefer to only eat Halal meat. Here's a sample meal plan focusing on healthier eating principles while incorporating Halal meat.\n\n**Important Considerations:**\n\n*   **Hydration:** Drink plenty of water throughout the day.\n*   **Portion Control:** Be mindful of portion sizes to avoid overeating.\n*   **Variety:** While this meal plan incorporates Halal meat, aim to include a variety of other healthy foods like vegetables, fruits, and whole grains (if you are able to eat them) for a well-rounded diet.\n*   **Listen to your Body:** Pay attention to your hunger and fullness cues.\n\n**Sample Meal Plan:**\n\n**Breakfast (300-400 calories):**\n\n*   **Option 1:** Omelet with 2-3 eggs, spinach, tomatoes, and a small amount of feta cheese (if tolerated). Serve with a side of fruit (berries or sliced apple).\n*   **Option 2:** Greek yogurt (plain, unsweetened) topped with a handful of nuts and seeds and a small portion of fruit.\n\n**Mid-Morning Snack (100-200 calories):**\n\n*   A small handful of almonds or walnuts.\n*   A piece of fruit (apple, orange, or banana).\n\n**Lunch (400-500 calories):**\n\n*   **Option 1:** Grilled chicken salad with mixed greens, cucumber, bell peppers, and a light vinaigrette dressing.\n*   **Option 2:** Lean ground beef stir-fry with a variety of non-starchy vegetables (broccoli, carrots, snap peas) and a small amount of soy sauce (check for Halal certification if needed). Serve over a small portion of brown rice, if tolerated.\n\n**Afternoon Snack (100-200 calories):**\n\n*   Hard-boiled egg.\n*   Carrot sticks with hummus.\n\n**Dinner (500-600 calories):**\n\n*   **Option 1:** Baked or grilled fish (salmon, cod, or tilapia) with roasted vegetables (broccoli, Brussels sprouts, sweet potatoes).\n*   **Option 2:** Halal lamb chops with a side of green beans and a small baked potato.\n\n**Important Notes on Halal Meat:**\n\n*   **Source:** Ensure your meat is sourced from a reputable Halal butcher or supplier.\n*   **Preparation:** Prepare the meat in a way that minimizes added unhealthy fats. Grilling, baking, or stir-frying are good options.\n*   **Variety:** Include a variety of Halal meats like chicken, beef, lamb, and fish in your diet.\n\n**Disclaimer:** *This information is intended for general knowledge and informational purposes only, and does not constitute medical advice. It is essential to consult with a qualified healthcare professional or registered dietitian for any health concerns or before making any dietary changes.*\n\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        }
+    ]
+}

@@ -42,27 +42,27 @@ st.markdown("""
     /* Main app background */
     .stApp {
         background-color: #4169E1; /* Royal Blue */
-        color: #FFFFFF; /* Pure white for main text */
+        color: #000000 ; /* Pure white for main text */
     }
 
     /* General text elements */
     h1, h2, h3, h4, h5, h6, p, label, .stMarkdown, .stText {
-        color: #FFFFFF;
+        color:#000000 ;
     }
 
     /* Sidebar styling */
     [data-testid="stSidebar"] {
         background-color: #3650B0; /* Darker shade of Royal Blue for sidebar */
-        color: #FFFFFF; /* Ensure sidebar text is also white */
+        color:#000000 ; /* Ensure sidebar text is also white */
     }
 
     /* Chat bubble styling */
     [data-testid="chat-message-container"] {
-        background-color: #5580F7; /* Lighter shade for chat bubbles */
+        background-color: #3650B0; /* Lighter shade for chat bubbles */
         border-radius: 10px;
         padding: 1rem;
         margin-bottom: 1rem;
-        color: #FFFFFF; /* Ensure chat bubble text is white */
+        color:#000000 ; /* Ensure chat bubble text is white */
     }
 
     /* User chat bubble */
@@ -78,7 +78,7 @@ st.markdown("""
     /* Button styling */
     .stButton>button {
         background-color: #3650B0; /* Same as sidebar background */
-        color: white;
+        color:#000000 ;
         border: 1px solid #FFFFFF; /* Add a light border to make it visible */
         border-radius: 5px;
         padding: 0.5rem 1rem;
@@ -95,12 +95,12 @@ st.markdown("""
     .st-emotion-cache-1h6xps {
         background-color: #5580F7; /* Same as chat bubbles */
         border-radius: 10px;
-        color: #FFFFFF; /* Ensure expander text is white */
+        color:#000000 ; /* Ensure expander text is white */
     }
 
     /* Adjust color for any remaining text to be white if needed */
     .st-emotion-cache-nahz7x, .st-emotion-cache-1avcm0n { /* Specific Streamlit classes for text */
-        color: #FFFFFF;
+        color:#000000 ;
     }
 
 </style>

@@ -1,0 +1,22 @@
+{
+    "name": "Guest",
+    "uid": "165b3b13-b05c-49dc-8d49-f9b1ff4fbdbc",
+    "goal": null,
+    "diet_preferences": null,
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "hello"
+        },
+        {
+            "role": "assistant",
+            "content": "Hello! How can I help you today?  Are you looking for information on a specific health topic, have a general medical question, or need assistance with something else related to health or biology?\n\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        }
+    ]
+}

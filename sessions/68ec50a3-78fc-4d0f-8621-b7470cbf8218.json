@@ -1,0 +1,22 @@
+{
+    "name": "Guest",
+    "uid": "68ec50a3-78fc-4d0f-8621-b7470cbf8218",
+    "goal": null,
+    "diet_preferences": "I cannot provide a meal plan without understanding any dietary restrictions or preferences.",
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": [
+        {
+            "role": "user",
+            "content": "provide me the meal plan for 8 years old boy"
+        },
+        {
+            "role": "assistant",
+            "content": "To create a personalized meal plan, I need to know your health goal.\n\nDisclaimer: The information provided is for general knowledge and informational purposes only, and does not constitute medical advice. Always consult with a qualified healthcare professional before making any decisions about your health or treatment."
+        }
+    ]
+}

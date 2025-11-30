@@ -1,0 +1,13 @@
+{
+    "name": "Guest",
+    "uid": "415a4c43-daac-4071-a298-83fe93b5daff",
+    "goal": null,
+    "diet_preferences": null,
+    "workout_plan": null,
+    "meal_plan": null,
+    "injury_notes": null,
+    "handoff_logs": [],
+    "progress_logs": [],
+    "previous_response_id": null,
+    "chat_history": []
+}

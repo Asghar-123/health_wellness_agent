@@ -14,7 +14,7 @@ from tools.workout_recommender import WorkoutRecommenderTool
 from tools.scheduler import CheckinSchedulerTool
 from tools.tracker import ProgressTrackerTool
 
-from agents import AsyncOpenAI, OpenAIChatCompletionsModel
+from agents import AsyncOpenAI, OpenAIChatCompletionsModel,Runner
 from agents.run import RunConfig, ModelSettings
 import typing_extensions
 
@@ -61,7 +61,7 @@ class HealthPlannerAgent:
             raise ValueError("GEMINI_API_KEY is not set.")
 
         external_client = AsyncOpenAI(
-            api_key="AIzaSyCGkWb0a6LCy49k-0xLekN0-1Aa9AkFDXY",
+            api_key="AIzaSyAzYT34ImIAww7iUekhkUn3a4SFIxIcPFw",
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
         )
 
@@ -101,6 +101,7 @@ You are an expert at classifying user intent. Your task is to classify the user'
 
 - "other": If the query does not fit any other category.
 Answer should not exceed from 400 words where necessary.
+If the user ask for meal plan or diet plan,you should provide the meal plan but first ask for their dietary preferences.
 
 Respond ONLY with the single category name.
 """
@@ -172,23 +173,23 @@ Respond ONLY with the single category name.
             workout_response["response"] = self.guardrail_manager.post_process_response(workout_response["response"])
             return workout_response
 
-        elif intent == "ask_meal_plan":
-            await self._parse_and_set_diet_preferences(user_input, ctx)
-            if not ctx.goal:
-                response_text = "To create a personalized meal plan, I need to know your health goal."
-                return {"ok": True, "response": self.guardrail_manager.post_process_response(response_text)}
+        # elif intent == "ask_meal_plan":
+        #     await self._parse_and_set_diet_preferences(user_input, ctx)
+        #     if not ctx.goal:
+        #         response_text = "To create a personalized meal plan, I need to know your health goal."
+        #         return {"ok": True, "response": self.guardrail_manager.post_process_response(response_text)}
             
-            # If goal is set, generate the meal plan
-            meal_response = await self._generate_meal_plan(ctx, dynamic_instructions_tone)
-            meal_response["response"] = self.guardrail_manager.post_process_response(meal_response["response"])
-            return meal_response
+        #     # If goal is set, generate the meal plan
+        #     meal_response = await self._generate_meal_plan(ctx, dynamic_instructions_tone)
+        #     meal_response["response"] = self.guardrail_manager.post_process_response(meal_response["response"])
+        #     return meal_response
         
         elif intent == "ask_general_question":
             return await self._process_general_query(user_input, ctx, system_instructions=dynamic_instructions_tone)
 
         else: # Fallback for "other" or failed intent classification
             system_instructions = (
-                "You are a specialized AI assistant with expertise in health, biology, and medical queries. "
+                "You are a specialized AI assistant with expertise in health, biology, and medical queries, but if the user asked about diet or meal plan you should answer "
                 "Provide accurate, safe, and helpful information. If the user's query is outside the scope, "
                 "state that you are a specialized health and wellness assistant."
             )
@@ -319,24 +320,26 @@ Respond ONLY with the single category name.
         final_response_text = "\n".join(response_parts)
         return {"ok": True, "response": final_response_text}
 
-    async def _generate_meal_plan(self, ctx: UserSessionContext, dynamic_instructions: str) -> Dict[str, Any]:
-        """Generates a meal plan based on user's goal and diet preferences."""
-        response_parts = []
-        goal = ctx.goal
-        goal_name = goal.get('name', 'an unspecified goal')
-        response_parts.append(f"Based on your goal to '{goal_name}' and your dietary preferences, here is a suggested meal plan:")
+    # async def _generate_meal_plan(self, ctx: UserSessionContext, dynamic_instructions: str) -> Dict[str, Any]:
+    #     """Generates a meal plan based on user's goal and diet preferences."""
+    #     response_parts = []
+    #     goal = ctx.goal
+    #     goal_name = goal.get('name', 'an unspecified goal')
+    #     response_parts.append(f"Based on your goal to '{goal_name}' and your dietary preferences, here is a suggested meal plan:")
 
-        mp = self.tools["meal_planner"]
-        await self.hooks.on_tool_start(mp.name, {"diet": ctx.diet_preferences, "goal": ctx.goal})
-        meal = await mp.run(self.model, ctx.diet_preferences, ctx.goal)
-        if meal and meal.get("meal_plan"):
-            ctx.meal_plan = meal["meal_plan"]
-            meal_plan_str = ["\nHere is your 7-day meal plan:"]
-            for day, meals_list in ctx.meal_plan.items():
-                meal_plan_str.append(f"\n{day.replace('_', ' ').title()}:")
-                for item in meals_list:
-                    meal_plan_str.append(f"- {item}")
-            response_parts.append("\n".join(meal_plan_str))
+    #     mp = self.tools["meal_planner"]
+    #     await self.hooks.on_tool_start(mp.name, {"diet": ctx.diet_preferences, "goal": ctx.goal})
+    #     meal = await mp.run(self.model, ctx.diet_preferences, ctx.goal)
+    #     if meal and meal.get("meal_plan"):
+    #         ctx.meal_plan = meal["meal_plan"]
+    #         meal_plan_str = ["\nHere is your 7-day meal plan:"]
+    #         for day, meals_list in ctx.meal_plan.items():
+    #             meal_plan_str.append(f"\n{day.replace('_', ' ').title()}:")
+    #             for item in meals_list:
+    #                 meal_plan_str.append(f"- {item}")
+    #         response_parts.append("\n".join(meal_plan_str))
 
-        final_response_text = "\n".join(response_parts)
-        return {"ok": True, "response": final_response_text}
+    #     final_response_text = "\n".join(response_parts)
+    #     return {"ok": True, "response": final_response_text}
+# result = Runner.run_sync(HealthPlannerAgent,"hello",run_config=RunConfig )
+# print(result.final_output)

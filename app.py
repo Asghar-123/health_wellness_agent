@@ -14,7 +14,6 @@ api_key = st.secrets["GEMINI_API_KEY"]
 
 model = OpenAIChatCompletionsModel(
     model="gemini-1.5-flash",
-    api_key=api_key,
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
 )
 

@@ -4,12 +4,19 @@ import os
 from dotenv import load_dotenv
 import json
 import uuid
-
+from agents import OpenAIChatCompletionsModel
 from agent import HealthPlannerAgent
 from context import UserSessionContext
 
 # Load environment variables (e.g., GEMINI_API_KEY)
 load_dotenv()
+api_key = st.secrets["GEMINI_API_KEY"]
+
+model = OpenAIChatCompletionsModel(
+    model="gemini-1.5-flash",
+    api_key=api_key,
+    base_url="https://generativelanguage.googleapis.com/v1beta/"
+)
 
 SESSION_DIR = "sessions"
 os.makedirs(SESSION_DIR, exist_ok=True)

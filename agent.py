@@ -57,14 +57,14 @@ class HealthPlannerAgent:
 
     def _initialize_model(self):
         """Initializes the Gemini model."""
-        openai_api_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
+        gemini_api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
         if not openai_api_key:
-            print("ERROR: OPENAI_API_KEY is not set in environment variables.")
-            raise ValueError("OPENAI_API_KEY is not set.")
+            print("ERROR: GEMINI_API_KEY is not set in environment variables.")
+            raise ValueError("GEMINI_API_KEY is not set.")
 
         external_client = AsyncOpenAI(
             
-            api_key=openai_api_key,
+            api_key=gemini_api_key,
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
         )
 

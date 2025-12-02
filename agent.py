@@ -58,7 +58,7 @@ class HealthPlannerAgent:
     def _initialize_model(self):
         """Initializes the Gemini model."""
         gemini_api_key = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
-        if not openai_api_key:
+        if not gemini_api_key:
             print("ERROR: GEMINI_API_KEY is not set in environment variables.")
             raise ValueError("GEMINI_API_KEY is not set.")
 

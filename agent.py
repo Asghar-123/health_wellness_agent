@@ -69,7 +69,9 @@ class HealthPlannerAgent:
         )
 
         self.model = OpenAIChatCompletionsModel(
-            model="models/gemini-2.0-flash",
+            # model="models/gemini-2.0-flash",
+            # openai_client=external_client,
+            model="gemini-1.5-flash",
             openai_client=external_client,
         )
 

@@ -72,7 +72,7 @@ class HealthPlannerAgent:
             # model="models/gemini-2.0-flash",
             # openai_client=external_client,
             model="gemini-1.5-flash",
-            openai_client=external_client,
+            client=external_client,
         )
 
         self.config = RunConfig(

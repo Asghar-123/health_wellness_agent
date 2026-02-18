@@ -13,8 +13,8 @@ from tools.meal_planner import MealPlannerTool
 from tools.workout_recommender import WorkoutRecommenderTool
 from tools.scheduler import CheckinSchedulerTool
 from tools.tracker import ProgressTrackerTool
-
-from agents import AsyncOpenAI, OpenAIChatCompletionsModel,Runner
+from openai import AsyncOpenAI
+from agents import OpenAIChatCompletionsModel,Runner
 from agents.run import RunConfig, ModelSettings
 import typing_extensions
 from dotenv import load_dotenv
